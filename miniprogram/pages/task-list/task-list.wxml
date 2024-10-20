@@ -1,24 +1,25 @@
 <!--pages/task-list/task-list.wxml-->
 <view class="task-list">
   <view class="task-list-header">
-    <text class="task-list-title">任务列表</text>
-    <button size="mini" wx:if="{{!isMngStatus}}" bind:tap="handleManage">管理</button>
-    <button size="mini" wx:if="{{isMngStatus}}" bind:tap="handleRemoveTask">删除({{selectedSum}})</button>
+    <text class="task-list-title">{{time}}/{{title}}</text>
+    <button class="task-list-btn" size="mini" wx:if="{{!isMngStatus}}" bind:tap="handleManage">管理</button>
+    <button class="task-list-btn task-list-btn-del" size="mini" wx:if="{{isMngStatus}}" bind:tap="handleRemoveTask">删除({{selectedSum}})</button>
   </view>
-  <form bindsubmit="handleAddTask" class="task-list-form">
+  <form class="task-list-form">
     <view class="form-create">
-      <input class="create-input" type="text" name="taskContent" value="{{iTaskContent}}" bind:input="handleSearch" placeholder="输入添加或搜索的值" confirm-type="done" />
-      <button class="create-btn" size="mini" plain formType="submit">添加</button>
+      <input class="create-input" type="text" name="taskContent" value="{{iTaskContent}}" bind:input="handleSearch" placeholder="添加/搜索任务" bindconfirm="handleAddTask" />
     </view>
   </form>
   <scroll-view class="task-list-container">
-    <view wx:if="{{taskList.length===0}}"><text>空空如也~</text></view>
+    <view hidden="{{taskList.length!==0}}"><text>
+        每一项都是未完成的承诺~
+      </text></view>
     <checkbox-group bind:change="handleSelectTask">
-      <view class="task-list-item" wx:for="{{taskList}}" wx:key="index">
+      <label class="task-list-item" wx:for="{{taskList}}" wx:key="index">
         <checkbox wx:if="{{isMngStatus}}" value="{{item.id}}"></checkbox>
         <text class="item-desc">{{item.content}}</text>
-        <image wx:if="{{!isMngStatus}}" class="item-operation" style="height: 34rpx;width: 34rpx;" src="{{item.selected?'../../assets/images/dec.png':'../../assets/images/inc.png'}}" mode="aspectFit" bind:tap="handleModifyList" data-task="{{item}}" />
-      </view>
+        <view wx:if="{{!isMngStatus}}" class="item-operation" bind:tap="handleModifyList" data-task="{{item}}">{{item.selected?"-":"+"}}</view>
+      </label>
     </checkbox-group>
   </scroll-view>
 </view>

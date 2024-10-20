@@ -3,7 +3,7 @@
   <block wx:if="{{type==='primary'||type==='secondary'}}">
     <view class="title">
       <!-- <text wx:if="{{index===0}}">{{title}}</text> -->
-      <text>{{title}}</text>
+      {{title}}
       <view wx:if="{{hasTask}}" class="add-task-again" bind:tap="handleAddTask">+</view>
     </view>
     <scroll-view class="tasks-scroll-view" scroll-y>
@@ -18,6 +18,5 @@
   <!-- 总结 -->
   <block wx:if="{{type==='summary'||type==='completeness'}}">
     <textarea class="task-textarea" placeholder="{{placeholder}}" adjust-position maxlength="{{-1}}" auto-height bind:blur="handleModifySummary" value="{{list}}"></textarea>
-    <!--  -->
   </block>
 </view>

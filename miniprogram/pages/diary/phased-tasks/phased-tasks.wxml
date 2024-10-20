@@ -1,11 +1,8 @@
 <view class="phased-tasks" style="height:{{100/total}}vh;">
   <view class="phased-tasks-time-period"><text>{{timeStr}}</text></view>
   <block wx:if="{{type==='tasks'}}">
-    <!-- <tasks index="{{index}}" no="{{pId}}" tasks="{{primaryData}}" type="primary"></tasks>
-    <tasks index="{{index}}" no="{{sId}}" tasks="{{secondaryData}}" type="secondary"></tasks> -->
-
-    <tasks index="{{index}}" tasks="{{primaryTasks}}" type="primary"></tasks>
-    <tasks index="{{index}}" tasks="{{secondaryTasks}}" type="secondary"></tasks>
+    <tasks index="{{index}}" tasks="{{primaryTasks}}" type="primary" time="{{timeStr}}"></tasks>
+    <tasks index="{{index}}" tasks="{{secondaryTasks}}" type="secondary" time="{{timeStr}}"></tasks>
   </block>
   <block wx:if="{{type==='summary'}}">
     <tasks index="{{index}}" tasks="{{taskOfCompleteness}}" type="completeness"></tasks>

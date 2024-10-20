@@ -50,7 +50,7 @@ function updateDailyData(id, task = {}, type = "") {
   const recentData = getRecentDailyData();
   const { daily_data: dailyData } = recentData;
 
-  const newData = dailyData.map((item) => {
+  const newData = dailyData?.map((item) => {
     return {
       ...item,
       [type]: item[type]?.id === id ? { id, data: task } : item[type],
