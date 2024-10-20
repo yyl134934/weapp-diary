@@ -1,10 +1,6 @@
 {
   "compileType": "miniprogram",
   "libVersion": "trial",
-  "packOptions": {
-    "ignore": [],
-    "include": []
-  },
   "miniprogramRoot": "miniprogram/",
   "setting": {
     "packNpmManually": true,
@@ -35,6 +31,10 @@
     "tabIndent": "auto",
     "tabSize": 2
   },
-  "appid": "wxd18cb90718ce9c69",
-  "srcMiniprogramRoot": "miniprogram/"
+  "srcMiniprogramRoot": "miniprogram/",
+  "packOptions": {
+    "ignore": [],
+    "include": []
+  },
+  "appid": "wxd18cb90718ce9c69"
 }

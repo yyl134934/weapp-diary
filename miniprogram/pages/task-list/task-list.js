@@ -18,13 +18,37 @@ Page({
     isMngStatus: false,
     selectedSum: 0,
     removeList: [],
+    title: "",
     onSearch: () => {},
   },
-  _mergeList(allTasks, tasksInPlan) {
-    return allTasks?.reduce((prev, item) => {
-      const isIncludes = tasksInPlan?.some(
-        (selected) => selected.id === item.id
-      );
+  _sort(list = [], plans = []) {
+    list
+      .sort((a, b) => {
+        //创建日期（日期越老越靠前）
+        return a.createDate - b.createDate;
+      })
+      .sort((a, b) => {
+        //添加频率(越高越靠前)
+        return b.weight - a.weight;
+      })
+      .sort((a, b) => {
+        //是否在计划内
+        if ((b.selected && a.selected) || !(b.selected || a.selected)) {
+          return 0;
+        } else if (a.selected) {
+          return -1;
+        } else {
+          return 1;
+        }
+      });
+
+    if (plans.length === 0) {
+      return list;
+    }
+
+    //是否在列表
+    return list?.reduce((prev, item) => {
+      const isIncludes = plans?.some((selected) => selected.id === item.id);
       return isIncludes
         ? [{ ...item, selected: true }, ...prev]
         : [...prev, item];
@@ -33,9 +57,14 @@ Page({
   _onPlan(list) {
     const eventChannel = this.getOpenerEventChannel();
     eventChannel?.on("updateThePlan", (data) => {
-      const { tasks: selectedTasks, id } = data;
-      const updatedList = this._mergeList(list, selectedTasks);
-      this.setData({ taskList: updatedList, alternateList: updatedList });
+      const { tasks: selectedTasks, title, time } = data;
+      const updatedList = this._sort(list, selectedTasks);
+      this.setData({
+        taskList: updatedList,
+        alternateList: updatedList,
+        title,
+        time,
+      });
     });
   },
   _updatePlan(task) {
@@ -79,23 +108,24 @@ Page({
     const { taskList, alternateList } = this.data;
     const updatedList = taskList?.map((item) => {
       return item.id === task.id
-        ? { ...item, selected: !item?.selected }
+        ? { ...item, selected: !item?.selected, weight: item?.weight + 1 }
         : item;
     });
+    this._sort(updatedList);
+
     const updatedAltList = alternateList?.map((item) => {
       return item.id === task.id
-        ? { ...item, selected: !item?.selected }
+        ? { ...item, selected: !item?.selected, weight: item?.weight + 1 }
         : item;
     });
+    this._sort(updatedAltList);
 
     this._updatePlan({ ...task, selected: !task?.selected });
     this.setData({ taskList: updatedList, alternateList: updatedAltList });
   },
   handleAddTask(e) {
-    const {
-      value: { taskContent = "" },
-    } = e.detail;
-    if (taskContent === "") {
+    const { value = "" } = e.detail;
+    if (value === "") {
       return;
     }
     function createTask(content = "") {
@@ -105,11 +135,13 @@ Page({
         done: false,
         auto: false,
         selected: false,
+        weight: 1,
+        createDate: new Date().getTime(),
       };
 
       return newTask;
     }
-    const newTask = createTask(taskContent);
+    const newTask = createTask(value);
     addTask(newTask);
     this.setData({
       taskList: this.data.alternateList.concat(newTask),

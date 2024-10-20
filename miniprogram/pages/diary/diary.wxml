@@ -1,3 +1,5 @@
 <view class="dialy">
-  <phased-tasks class="dialy-phased-tasks" index="{{index}}" total="{{dailyData.length}}" wx:key="index" wx:for="{{dailyData}}" timePeriod="{{item.timePeriod}}" primaryTasks="{{item.primaryTasks}}" secondaryTasks="{{item.secondaryTasks}}" taskOfCompleteness="{{item.taskOfCompleteness}}" summary="{{item.summary}}" type="{{item.type}}" />
+  <phased-tasks class="dialy-phased-tasks" index="{{index}}" total="{{dailyData.length}}" wx:key="index" wx:for="{{dailyData}}" timePeriod="{{item.timePeriod}}" primaryTasks="{{item.primaryTasks}}" secondaryTasks="{{item.secondaryTasks}}" taskOfCompleteness="{{item.taskOfCompleteness}}" summary="{{item.summary}}" type="{{item.type}}">
+    <view style="position:relative; width: 100%; background: #d3d3d3; height: 100px"></view>
+    </phased-tasks>
 </view>

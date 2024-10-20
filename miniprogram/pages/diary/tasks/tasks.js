@@ -33,6 +33,10 @@ Component({
       type: String,
       value: DEFAULT_TYPE,
     },
+    time: {
+      type: String,
+      value: "",
+    },
   },
 
   /**
@@ -68,11 +72,15 @@ Component({
      */
     handleAddTask: function (e) {
       const { list } = this.data;
+      const { title, time } = this.properties;
+
       wx.navigateTo({
         url: "../../pages/task-list/task-list",
         success: function (res) {
           res.eventChannel.emit("updateThePlan", {
             tasks: list,
+            title,
+            time,
           });
         },
         events: {
@@ -111,15 +119,15 @@ Component({
      * @param {*} e
      */
     handleModifyTaskStatus: function (e) {
-      // TODO 获取更新数据项
+      // 获取更新数据项
       const { task: currentTask } = e.currentTarget.dataset || {};
-      // TODO 修改【!done】
+      // 修改【!done】
       currentTask.done = !currentTask.done;
-      // TODO 替换全局【tasks】列表对应项
+      // 替换全局【tasks】列表对应项
       const updatedList = this.data.list.map((item) =>
         item.id === currentTask?.id ? { ...item, ...currentTask } : item
       );
-      // TODO 调用api接口写入storage持久化
+      // 调用api接口写入storage持久化
       const {
         tasks: { id },
         type,
